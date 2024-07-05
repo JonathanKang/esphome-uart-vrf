@@ -68,6 +68,10 @@ namespace vrf_protocol {
             case VrfZhonghongClimateFanSpeed::ZHONG_HONG_CLIMATE_FAN_SPEED_LOW:
                 target_climate->set_fan_mode(VrfClimateFanMode::CLIMATE_FAN_MODE_LOW);
                 break;
+            case VrfZhonghongClimateFanSpeed::ZHONG_HONG_CLIMATE_FAN_SPEED_AUTO:
+              target_climate->set_fan_mode(
+                  VrfClimateFanMode::CLIMATE_FAN_MODE_AUTO);
+              break;
             default:
                 break;
             }
@@ -329,7 +333,7 @@ namespace vrf_protocol {
         switch (mode)
         {
         case VrfClimateFanMode::CLIMATE_FAN_MODE_AUTO:
-            cmd[2] = uint8_t(VrfZhonghongClimateFanSpeed::ZHONG_HONG_CLIMATE_FAN_SPEED_LOW); // 强制低速
+            cmd[2] = uint8_t(VrfZhonghongClimateFanSpeed::ZHONG_HONG_CLIMATE_FAN_SPEED_AUTO);
             break;
         case VrfClimateFanMode::CLIMATE_FAN_MODE_HIGH:
             cmd[2] = uint8_t(VrfZhonghongClimateFanSpeed::ZHONG_HONG_CLIMATE_FAN_SPEED_HIGH);

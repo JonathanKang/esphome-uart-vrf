@@ -49,6 +49,16 @@ void VrfGatewayWrapper::incr_next_idx() {
     }
 }
 
+vrf_protocol::VrfCmd VrfGatewayWrapper::cmd_test_me() {
+    if (this->vrf_gateway_ != nullptr) {
+        return this->vrf_gateway_->cmd_test_me();
+    }
+
+    vrf_protocol::VrfCmd cmd = this->gateways_[this->get_next_idx ()]->cmd_test_me();
+    this->incr_next_idx ();
+    return cmd;
+}
+
 vrf_protocol::VrfCmd VrfGatewayWrapper::cmd_find_climates() {
     if (this->vrf_gateway_ != nullptr) {
         return this->vrf_gateway_->cmd_find_climates();
@@ -98,8 +108,9 @@ void UartVrfComponent::setup() {
     this->vrf_gateway_wrapper_->add_gateway(zhonghongGateway);
 
     this->set_interval("fire_cmd", 300, [this] { this->fire_cmd(); });
+    this->set_interval("test_me", 2000, [this] { this->test_me(); });
     this->set_interval("find_climates", 5000, [this] { this->find_climates(); });
-    this->set_interval("query_next_climate", 1000, [this] { this->query_next_climate(); });
+    this->set_interval("query_next_climate", 3000, [this] { this->query_next_climate(); });
 }
 
 void UartVrfComponent::on_climate_create_callback(vrf_protocol::VrfClimate* climate) {
@@ -193,6 +204,15 @@ void UartVrfComponent::send_cmd(vrf_protocol::VrfCmd cmd) {
     }
 
     this->fire_cmd();
+}
+
+void UartVrfComponent::test_me() {
+    if (this->vrf_gateway_wrapper_ == nullptr) {
+        return;
+    }
+
+    vrf_protocol::VrfCmd cmd = this->vrf_gateway_wrapper_->cmd_test_me();
+    this->send_cmd (cmd);
 }
 
 void UartVrfComponent::find_climates() {

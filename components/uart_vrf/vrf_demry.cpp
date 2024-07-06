@@ -92,21 +92,31 @@ namespace vrf_protocol {
             }
 
             if (this->data_[0] != this->slave_addr_) {
-                // not my data
-                this->data_.clear();
-                return;
+              // not my data
+              this->data_.clear();
+              return;
             }
 
             if (this->data_[1] == 0xAA) {
-                this->consume_data_handle_found_climates();
+              this->consume_data_handle_found_climates();
             } else {
-                this->consume_data_handle_query_climate();
+              this->consume_data_handle_query_climate();
             }
 
             // erase 10 bytes
-            esphome::ESP_LOGD(TAG, "consume succ, data=%s", esphome::format_hex_pretty(this->data_.data(), 10).c_str());
+            esphome::ESP_LOGD(
+                TAG, "consume succ, data=%s",
+                esphome::format_hex_pretty(this->data_.data(), 10).c_str());
             this->data_.erase(this->data_.begin(), this->data_.begin() + 10);
         }
+    }
+
+    VrfCmd VrfDemryGateway::cmd_test_me() {
+      std::vector<uint8_t> cmd = {
+          this->slave_addr_, 0xAA, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
+      uint8_t sum = checksum(cmd);
+      cmd.push_back(sum);
+      return VrfCmd(cmd);
     }
 
     VrfCmd VrfDemryGateway::cmd_find_climates() {

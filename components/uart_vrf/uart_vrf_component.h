@@ -20,6 +20,7 @@ class VrfGatewayWrapper {
   public:
   void add_gateway(vrf_protocol::VrfGateway* gateway);
   void consume_data(uint8_t data);
+  vrf_protocol::VrfCmd cmd_test_me();
   vrf_protocol::VrfCmd cmd_find_climates();
   vrf_protocol::VrfCmd cmd_query_next_climate();
   std::vector<vrf_protocol::VrfClimate *> get_climates();
@@ -55,6 +56,7 @@ protected:
   unsigned long last_time_fire_cmd{0};
 
   void fire_cmd();
+  void test_me();
   void find_climates();
   void query_next_climate();
   

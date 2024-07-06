@@ -153,6 +153,19 @@ namespace vrf_protocol {
         }
     }
 
+    VrfCmd VrfZhonghongGateway::cmd_test_me() {
+        std::vector<uint8_t> cmd = {
+            this->slave_addr_,
+            0xA0,
+            0xAA,
+            0xFF,
+            0xFF,
+            0xFF};
+        uint8_t sum = checksum(cmd);
+        cmd.push_back(sum);
+        return VrfCmd(cmd);
+    }
+
     VrfCmd VrfZhonghongGateway::cmd_find_climates() {
         std::vector<uint8_t> cmd = { 
             this->slave_addr_, 

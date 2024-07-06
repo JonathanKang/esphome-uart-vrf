@@ -40,6 +40,7 @@ namespace vrf_protocol {
         public:
         VrfZhonghongGateway(uint8_t slave_addr) : VrfGateway(slave_addr) {};
         void consume_data(uint8_t data) override;
+        VrfCmd cmd_test_me() override;
         VrfCmd cmd_find_climates() override;
         VrfZhonghongClimate* find_or_create_climate(uint8_t outdoor_addr, uint8_t indoor_addr);
 
